@@ -1,0 +1,2 @@
+# oni-commit
+Commit Carefully
