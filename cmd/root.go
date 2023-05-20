@@ -4,11 +4,12 @@ Copyright © 2023 Anindya Chowdhury <anindya.chowdhury@protonmail.com>
 package cmd
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/spf13/cobra"
 
-	"oni-commit/utils/console"
+	"oni-commit/utils/promptwrapper"
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -24,7 +25,18 @@ to quickly create a Cobra application.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	Run: func(cmd *cobra.Command, args []string) {
-		console.BoldCyan("🤔 Select the type of your commit:")
+		var prompt = promptwrapper.Prompt()
+
+		index, _, err := prompt.Run()
+
+		if err != nil {
+			fmt.Printf("Prompt failed %v\n", err)
+			return
+		}
+
+		selected := promptwrapper.Scopes[index]
+
+		fmt.Printf("You choose -\nID - %d \n%q\n ", selected.ID, selected.Name)
 	},
 }
 
