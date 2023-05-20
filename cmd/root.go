@@ -9,6 +9,7 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"oni-commit/utils/console"
 	"oni-commit/utils/promptwrapper"
 )
 
@@ -25,7 +26,7 @@ to quickly create a Cobra application.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	Run: func(cmd *cobra.Command, args []string) {
-		var prompt = promptwrapper.Prompt()
+		var prompt = promptwrapper.SelectPrompt()
 
 		index, _, err := prompt.Run()
 
@@ -35,8 +36,18 @@ to quickly create a Cobra application.`,
 		}
 
 		selected := promptwrapper.Scopes[index]
+		console.PrintSelection("selected", selected.Name)
 
-		fmt.Printf("You choose -\nID - %d \n%q\n ", selected.ID, selected.Name)
+		var typePrompt = promptwrapper.TypePrompt(selected)
+
+		message, err := typePrompt.Run()
+
+		if err != nil {
+			fmt.Printf("Prompt failed %v\n", err)
+			return
+		}
+
+		console.PrintSelection("message", message)
 	},
 }
 
