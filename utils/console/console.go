@@ -10,6 +10,10 @@ func BoldCyan(text string) {
 	color.New(color.FgCyan, color.Bold).Println(text)
 }
 
+func BoldBgRed(text string) {
+	color.New(color.BgHiRed, color.Bold).Println(text)
+}
+
 func PrintSelection(option string, text string) {
 	dictionary := make(map[string]string)
 	dictionary["selected"] = "Selected type of commit"
