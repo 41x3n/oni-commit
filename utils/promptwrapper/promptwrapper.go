@@ -69,3 +69,12 @@ func TypePrompt(selected CommitType) promptui.Prompt {
 
 	return prompt
 }
+
+func TypeBodyPrompt() promptui.Prompt {
+	prompt := promptui.Prompt{
+		Label:     "Do you want to add a body?",
+		IsConfirm: true,
+	}
+
+	return prompt
+}

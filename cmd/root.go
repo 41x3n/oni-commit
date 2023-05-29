@@ -10,6 +10,8 @@ import (
 	"github.com/spf13/cobra"
 
 	"oni-commit/utils/console"
+	"oni-commit/utils/editor"
+	"oni-commit/utils/gitcommand"
 	"oni-commit/utils/promptwrapper"
 )
 
@@ -26,6 +28,8 @@ to quickly create a Cobra application.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	Run: func(cmd *cobra.Command, args []string) {
+		commitMessage := ""
+
 		var prompt = promptwrapper.SelectPrompt()
 
 		index, _, err := prompt.Run()
@@ -48,6 +52,33 @@ to quickly create a Cobra application.`,
 		}
 
 		console.PrintSelection("message", message)
+
+		commitMessage = selected.Type + ": " + message
+
+		var typeBodyPrompt = promptwrapper.TypeBodyPrompt()
+
+		result, err := typeBodyPrompt.Run()
+
+		addBody := true
+
+		if err != nil || result != "y" {
+			addBody = false
+		}
+
+		bodyMessage := ""
+
+		if addBody {
+
+			inputData, err := editor.TakeBodyAsInput()
+
+			if err != nil {
+				return
+			}
+			bodyMessage = (string(inputData))
+		}
+
+		gitcommand.CommitIt(commitMessage, bodyMessage)
+
 	},
 }
 
